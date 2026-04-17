@@ -19,11 +19,21 @@
 5. Generate summary statistics and investment insights
 
 ## 4. Key Findings
-- AAPL has a higher average ROE than MSFT, but with greater volatility
-- AAPL's debt-to-equity ratio is significantly higher, indicating that its ROE advantage partly comes from higher financial leverage
-- Both companies have similar ROA levels, suggesting comparable core profitability
+- AAPL has a higher average ROE than MSFT, but with greater volatility.
+- AAPL's debt-to-equity ratio is significantly higher, indicating financial leverage.
+- Both companies have similar ROA levels, suggesting comparable core profitability.
 
-## 5. How to Run
+## 5. Demo Video
+
+📹 Click to watch demo video: https://b23.tv/7Hpcatk
+
+## 6. Limitations & Next Steps
+
+· Only two large US tech companies were analysed
+· Quarterly data and industry adjustments not considered
+· Future work: expand to more companies, add DuPont analysis
+
+## 7. How to Run
 ```bash
 pip install wrds pandas matplotlib seaborn
 jupyter notebook financial_analysis_wrds.ipynb
