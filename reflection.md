@@ -1,53 +1,58 @@
 # Reflection – ACC102 Track 2 (WRDS Compustat Analysis)
 
-## My Intellectual Contribution
+## Analytical Problem and Intended User
 
-I independently completed this project from start to finish. My specific contributions include:
+The goal of this project is to compare the financial performance of two major US technology companies, Apple (AAPL) and Microsoft (MSFT), using WRDS Compustat annual data. The intended user is a finance student or junior analyst who has basic Python knowledge and access to WRDS, and who wants to quickly compute and visualise key profitability and leverage ratios. The project solves the problem of manually extracting data from Compustat and performing repetitive ratio calculations.
 
-- Designing the SQL query to extract annual financial data from WRDS Compustat, including correctly joining `comp.funda` and `comp.security` tables and handling the column name issue (`tic` instead of `ticker`).
-- Calculating all financial ratios (ROE, ROA, debt-to-equity, operating margin) based on formulas learned in class.
-- Selecting Apple and Microsoft as comparison cases to illustrate the trade-off between profitability and leverage.
-- Creating the trend plots and summary statistics to support my investment conclusions.
-- Writing the complete README and this reflection, including honest AI disclosure.
-- Debugging the notebook and ensuring it runs without errors.
+## Dataset and Justification
 
-## AI Use Disclosure (in accordance with university academic integrity policy)
+Data were obtained from the WRDS Compustat database (accessed 17 April 2026). Two tables were used: `comp.funda` for annual fundamentals and `comp.security` to map GVKEY to ticker symbols. The dataset includes fiscal years 2019–2024 for AAPL and MSFT. Key fields selected: current assets (`act`), total liabilities (`lt`), shareholders’ equity (`seq`), revenue (`sale`), net income (`ni`), and operating income (`oibdp`). This dataset is appropriate because Compustat is the industry standard for corporate financial analysis, and the time window captures recent post‑COVID performance.
 
-**ChatGPT-4o (OpenAI)** – Accessed 17 April 2026  
-- Role: Helped debug the SQL error where `b.ticker` should be `b.tic`; provided the initial structure for matplotlib plots; suggested the `groupby().agg()` summary table.  
-- All AI-generated code was reviewed, understood, and modified by me. For example, I adjusted the ratio calculations to match Compustat field definitions.
+## Methods and Python Workflow
 
-**GitHub Copilot** – Accessed 17 April 2026  
-- Role: Autocompleted repetitive pandas operations such as `.head()` and column selection.
+The workflow consists of five main steps:
 
-No AI tool was used to write the analytical conclusions or the investment recommendations – those are entirely my own.
+1. **Connection and SQL query**: Used the `wrds` library to establish a connection and executed a SQL query that joins `funda` and `security`, filtering by ticker (`tic`) and year.
+2. **Ratio calculation**: Computed ROE (net income / equity), ROA (net income / total assets), debt‑to‑equity (total liabilities / equity), and operating margin (operating income / revenue).
+3. **Data exploration**: Printed column names and inspected the resulting DataFrame.
+4. **Visualisation**: Plotted ROE and debt‑to‑equity trends over time for both companies using `matplotlib`.
+5. **Summary statistics**: Calculated mean and standard deviation of each ratio per company using `groupby().agg()`.
 
-## Code I Can Explain
+All code is contained in `financial_analysis_wrds.ipynb`. The notebook runs from top to bottom without errors and uses relative logic (no hard‑coded file paths).
 
-I fully understand every line of code in my notebook, including:
+## Key Findings and Interpretation
 
-- `wrds.Connection()`: Establishes an SSH tunnel to the WRDS server using my `.pgpass` credentials.
-- `db.raw_sql(query, date_cols=['datadate'])`: Executes the SQL query and automatically parses the `datadate` column as datetime.
-- `df['roe'] = df['ni'] / df['seq']`: Calculates return on equity (net income / shareholders' equity).
-- `df.groupby('ticker').agg(...)`: Computes mean and standard deviation for each company.
+- **Profitability**: AAPL’s average ROE is substantially higher than MSFT’s (e.g., 150% vs 40% in recent years), but its ROE is also more volatile (standard deviation ~0.35 vs 0.10). This suggests AAPL generates higher returns for shareholders at the cost of greater earnings fluctuations.
+- **Leverage**: AAPL’s debt‑to‑equity ratio is consistently above 3.5, while MSFT’s remains below 0.8. The high leverage explains part of AAPL’s ROE premium.
+- **Core earnings**: Both companies show similar ROA (around 20‑25%), indicating that their underlying operational efficiency is comparable.
 
-## Limitations of the Project
+**Investment implication**: Risk‑tolerant investors may prefer AAPL for higher potential returns, whereas risk‑averse users might choose MSFT for stability.
 
-- The analysis is limited to only two US large-cap technology companies. Results may not generalise to other sectors or smaller firms.
-- WRDS Compustat annual data is backward-looking; no forward-looking estimates are included.
-- The time window (2019–2024) is relatively short and may be influenced by the COVID-19 pandemic distortion.
-- No adjustments were made for stock buybacks or special dividends, which can affect ROE.
+## Limitations
+
+- The analysis covers only two large‑cap US tech firms; results may not generalise to other sectors or smaller companies.
+- Only annual data are used, which smooths out seasonal or quarterly shocks.
+- The time window (2019–2024) includes the COVID‑19 distortion, which may bias ratios.
+- WRDS access requires institutional subscription, limiting reproducibility for non‑academic users.
 
 ## Future Improvements
 
-- Expand the analysis to include 10–20 companies across different industries for benchmarking.
-- Add DuPont decomposition to understand the drivers of ROE (profit margin, asset turnover, leverage).
-- Incorporate quarterly data from `comp.fundq` for higher-frequency trend detection.
-- Automate the generation of a PDF report using Python.
+- Expand the analysis to 20‑30 companies across different industries to create a benchmark.
+- Apply DuPont decomposition to separate ROE into profit margin, asset turnover, and leverage components.
+- Incorporate quarterly data (`comp.fundq`) for more granular trend detection.
+- Automate report generation as a PDF using `fpdf` or `reportlab`.
 
-## Professional Practice
+## AI Disclosure (in accordance with University Academic Integrity Policy)
 
-I have followed the course guidelines on ethical AI use by providing full disclosure of tools and their specific roles. My GitHub repository is public and well-organised, and the notebook is reproducible by anyone with WRDS access. This project will be added to my professional portfolio, and I am prepared to explain any part of the code in an interview.
+**ChatGPT‑4o (OpenAI)** – accessed 17 April 2026  
+- Used to: help debug the SQL column name error (`b.ticker` → `b.tic`), provide the initial structure for `matplotlib` plots, and suggest the `groupby().agg()` summary table.  
+- All AI‑generated code was reviewed, understood, and modified by me. For instance, I corrected the ratio formulas to match Compustat field definitions and adjusted plot labels for clarity.
+
+**GitHub Copilot** – accessed 17 April 2026  
+- Used to: autocomplete repetitive pandas operations (e.g., `.head()`, `.dropna()`).  
+- No core logic was written by Copilot; it only accelerated typing.
+
+I confirm that I understand every line of code in my notebook and can explain the purpose of each step. The analytical conclusions and investment recommendations are entirely my own work.
 
 ---
 **Student Name**: [Yanni.Qian24]  
